@@ -1,0 +1,358 @@
+#include <iostream>
+#include <chrono>
+#include <ctime>
+#include <math.h>
+using namespace std;
+using namespace chrono;
+
+
+void Shell_sort(int mass[], int size) //сортировка Шелла
+{
+    int i, j, d, count;
+    d=size;
+    d=d/2;
+    while (d>0)
+    {
+    for (i=0; i<size-d; i++)
+    {
+        j=i;
+        while (j>=0 && mass[j]>mass[j+d])
+        {
+        count=mass[j];
+        mass[j]=mass[j+d];
+        mass[j+d]=count;
+        j--;
+        }
+    }
+    d=d/2;
+    }
+}
+
+void print_mass(int mass[], int size)
+{
+    for (int i = 0; i < size; i++)
+        cout<<mass[i]<<" ";
+}
+
+void Bubble_sort(int mass[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size-i; j++)
+		{
+			if (mass[j] > mass[j + 1]) 
+			{
+				int b = mass[j]; 
+				mass[j] = mass[j + 1]; 
+				mass[j + 1] = b; 
+			}
+		}
+    }
+}
+
+void Shaker_sort(int mass[], int size)
+{
+    for (; size != 1; size--)
+        for (int i = 0; i < size - 1; i++) 
+        {
+            if (mass[i] > mass[i + 1])
+                swap(mass[i], mass[i + 1]);
+        }
+        for (int i = size-2; i > 0; i--)
+        {
+            if (mass[i] < mass[i - 1])
+                swap(mass[i], mass[i - 1]);
+        }
+}
+
+void Insert_sort(int mass[], int size)
+{
+    int x,j;
+    for (int i=1;i<size;i++)
+    {
+        x=mass[i];
+        j=i;
+        while((j>0)&&(x<mass[j-1]))
+        {
+            mass[j]=mass[j-1];
+            j--;
+        }
+        mass[j]=x;
+    }
+}
+
+void Comb_sort(int mass[], int size)
+{
+    int count = 0;
+    int swap;
+    float k = 1.247, S = size-1;
+    while (S >= 1)
+	{
+		for (int i = 0; i + S < size; i++)
+		{
+			if (mass[i] > mass[int(i + S)])
+			{
+				swap = mass[int(i + S)];
+				mass[int(i + S)] = mass[i];
+				mass[i] = swap;
+			}
+		}
+		S /= k;
+	}
+
+	while (true)
+	{
+		for (int i = 0; i < size - 1; i++)
+		{
+			if (mass[i] > mass[i + 1])
+			{
+				swap = mass[i + 1];
+				mass[i + 1] = mass[i];
+				mass[i] = swap;
+			}
+			else count++;
+		}
+		if (count == size - 1)
+			break;
+		else
+			count = 0;
+	}
+}
+
+int find_min_unsort(int arr[], int size)
+{
+	int min=arr[0];
+	for(int k=1;k<size;k++)
+	{
+		if(arr[k]<min)
+			min = arr[k];
+	}
+	return min;
+}
+
+int find_max_unsort(int arr[], int size)
+{
+	int max=arr[0];
+	for(int k=1;k<size;k++)
+	{
+		if(arr[k]>max)
+			max = arr[k];
+	}
+	return max;
+}
+
+
+int main()
+{
+    system("chcp 65001");   //Установка utf в cmd(чтобы был русский язык)
+    srand(time(0));
+    const int N = 100;
+    int arr[N];
+    int max,min,cnt;
+    float sr_znach;
+    int okr_sr_znach;
+    int a,b;
+    int c,d;
+    int swap;
+    int cnt1,cnt2;
+    int arr_sort[N];
+    for (int i=0;i<N;i++)
+    {
+        arr[i]=-99+rand()%199;
+    }
+    int br;
+    while(1)
+    {
+        cout<<"Текущий неотсортированный массив:\n";
+        for (int i=0;i<N;i++)
+        {
+            arr_sort[i]=arr[i];
+            cout<<arr[i]<<" ";
+        }
+        cout<<"\n\n1.Создать новый неотсортированный массив\n2.Отсортировать массив\n3.Найти максимум и минимум в неотсортированном массиве"<<"\n4.Найти максимум и минимум в отсортированном массиве\n5.Среднее значение\n6.Найти количество элементов в отсортированном массиве, которые меньше числа a\n7.Найти количество элементов в отсортированном массиве, которые больше числа b\n8.Поменять местами элементы массива, индексы которых вводит пользователь\n9.Бинарный поиск\n";
+        cin>>br;
+        auto start = steady_clock::now();
+        switch (br)
+        {
+            case 1:
+                for (int i=0;i<N;i++)
+                {
+                    arr[i]=-99+rand()%199;
+                    cout<<arr[i]<<" ";
+                }
+            break;
+            case 2:
+                int br1;
+                cout<<"Выберете способ сортировки:\n1)Bubble sort\n2)Shaker sort\n3)Comb sort\n4)Insert sort\n5)Shell sort:\n";
+                cin>>br1;
+                switch(br1)
+                {
+                    case 1: 
+                    cout<<"Неотсортированный массив:\n";
+                    print_mass(arr, N);
+                    cout<<"\nBubble sort:\n";
+                    Bubble_sort(arr_sort,N);
+                    print_mass(arr_sort, N);
+                    break;
+                    case 2:
+                    cout<<"Неотсортированный массив:\n";
+                    print_mass(arr, N);
+                    cout<<"\nShaker sort:\n";
+                    Shaker_sort(arr_sort,N);
+                    print_mass(arr_sort,N);
+                    break;
+                    case 3:
+                    cout<<"Неотсортированный массив:\n";
+                    print_mass(arr,N);
+                    cout<<"\nComb sort:\n";
+                    Comb_sort(arr_sort,N);
+                    print_mass(arr_sort, N);
+                    break;
+                    case 4:
+                    cout<<"Неотсортированный массив:\n";
+                    print_mass(arr,N);
+                    cout<<"\nInsert sort:\n";
+                    Insert_sort(arr_sort,N);
+                    print_mass(arr_sort, N);
+                    break;
+                    case 5:
+                    cout<<"Неотсортированный массив:\n";
+                    print_mass(arr,N);
+                    cout<<"\nShell sort:\n";
+                    Shell_sort(arr_sort,N);
+                    print_mass(arr_sort, N);
+                    break;
+                }
+            break;
+            case 3:
+                cout<<"Максимум="<< find_max_unsort(arr, N)<<"\n";
+                cout<<"Минимум="<< find_min_unsort(arr, N);
+            break;
+            case 4:
+                Insert_sort(arr_sort,N);
+                cout<<"Максимум="<< arr_sort[99]<<"\n";
+                cout<<"Минимум="<< arr_sort[0];
+            break;
+            case 5:
+                cout<<"Среднее значение: ";
+                max = find_max_unsort(arr, N);
+                min = find_min_unsort(arr, N);
+                sr_znach = (max+min)/2.0;
+                okr_sr_znach=round(sr_znach);
+                cout<<sr_znach<<"\n";
+                cout<<"Округленное ср.значение: "<<okr_sr_znach;
+                cnt=0;
+                cout<<"\nИндексы элементов, равных ср.значению:\n";
+                for (int i = 0; i < N; i++)
+                {
+                    if (arr[i]==okr_sr_znach)
+                    {
+                        cnt++;
+                        cout<<i<<" ";
+                    }
+                }
+                if(cnt>0)
+                    cout<<"\nКоличество элементов равное ср.значению: "<<cnt;
+                else
+                    cout<<"\nНет таких элементов";
+
+            break;
+            case 6:
+                Insert_sort(arr_sort,N);
+                cout<<"\nВведите число а: ";
+                cin>>a;
+                cnt1=0;
+                for (int i = 0; i < N; i++)
+                {
+                    if (arr_sort[i]<a)
+                    {
+                        cnt1++;
+                    }
+                    else
+                        break;
+                    
+                }
+                if(cnt1>0)
+                    cout<<"\nКоличество элементов, которые меньше числа а: "<<cnt1;
+                else
+                    cout<<"\nНет таких элементов";
+            break;
+            case 7:
+                Insert_sort(arr_sort,N);
+                cout<<"\nВведите число b: ";
+                cin>>b;
+                cnt2=0;
+                for (int i = N-1; i >= 0; i--)
+                {
+                    if (arr_sort[i]>b)
+                    {
+                        cnt2++;
+                    }
+                    else
+                        break;
+                    
+                }
+                if(cnt2>0)
+                    cout<<"\nКоличество элементов, которые больше числа а: "<<cnt2;
+                else
+                    cout<<"\nНет таких элементов";
+            break;
+            case 8:
+                cout<<"Введите два идекса: ";
+                cin>> c >> d;
+                swap = arr[c];
+                arr[c]=arr[d];
+                arr[d]=swap;
+                for (int i=0;i<N;i++)
+                {
+                    cout << arr[i]<<" ";
+                }
+            break;
+            case 9:
+                Insert_sort(arr,N);
+                bool flag = false;
+                int l = 0; 
+                int k;
+                int d = N-1;
+                int mid;
+                while ((l <= d) && (flag != true)) 
+                {
+                    mid = (l + d) / 2;
+                    if (arr[mid] == k)
+                    {
+                    flag = true;
+                    break; 
+                    }
+                    if (arr[mid] > k)
+                    d = mid - 1; 
+                    else 
+                    l = mid + 1;
+                }
+                if (flag) 
+                cout << "Индекс элемента " << k << " в массиве равен: " << mid<<"\n";
+                else 
+                cout << "Такого элемента в массиве нет\n";
+                for(int j = mid - 1;j>=0;j--)
+                {
+                    if(arr[j]!=k)
+                    break;
+                    else
+                    cout<<j;
+                }
+                for(int j = mid + 1;j<=N;j++)
+                {
+                    if(arr[j]!=k)
+                    break;
+                    else
+                    cout<<j<<" ";
+                }
+            break;
+            default:exit(0);
+        }
+        auto end = steady_clock::now();
+        auto result = duration_cast<nanoseconds>(end-start)/1000;
+        cout<<"\n""Время:"<<result.count()<<"mks"<<"\n";
+        system("pause");
+
+    }
+}
