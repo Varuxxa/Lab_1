@@ -1,0 +1,118 @@
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+
+
+void pr_bin(long num)
+{
+    unsigned long mask=1 << 31;
+        for (short i=0;i<32;i++)
+        {
+           if (i%8==0)
+                putchar(' ');
+           putchar(num & mask ? '1' : '0'); 
+           mask = mask>>1;
+        }
+}
+
+long f_odd(long num)
+{
+    long result = num | 0x55555555;
+    return result;
+
+}
+
+long f_even(long num)
+{
+    long result = num | 0xAAAAAAAA;
+    return result;
+
+}
+
+
+int main()
+{
+
+	system("chcp 65001"); 
+	cout<<"ИДЗ 14"<<"\nВведите число:";
+    long num,result;
+    cin>>num;
+	int k;
+    if (num>0)
+        result = f_odd(num);
+    else if(num<0)
+        result = f_even(num);
+    else
+        result=num;
+    cout<<"num=";
+    pr_bin(num);
+    cout<<"\nresult=";
+    pr_bin(result);
+    cout<<"\nend";
+	cout << "\n1 Задание"<<"\nСколько памяти занимают в байтах различные типы данных:"<<"\nint:" << sizeof(int) << "\n"<< "short int:" << sizeof(short int)<<"\n"<< "long int:" << sizeof(long int)<<"\n" << "float:" << sizeof(float) << "\n" << "double:" << sizeof(double)<<"\n" << "long double:" << sizeof(long double)<<"\n" << "char:" << sizeof(char)<< "\n" <<"bool:" << sizeof(bool)<<"\n";// 1) 
+	int a;
+	cout << "Enter an integer:";															//2)
+	cin >> a;
+	int b=sizeof(a)*8-1;
+	unsigned mask=1 << b;
+	for (int i=0;i<=b;i++)
+	{
+		if (i==1 || i%8==0)
+		{
+			putchar(' ');
+		}
+		putchar(a & mask ? '1' : '0');
+		mask = mask>>1;
+	}
+	union{       //3)
+		float f;
+		int ia;
+	};
+	cout<<"\n"<<"Задание 3\n"<<"Enter float number:";
+	cin >> f;
+	mask=1<<b;
+	for (int i=0;i<=b;i++)
+	{
+		if (i==1 || i==9)
+		{
+			putchar(' ');
+		}
+		putchar(ia & mask ? '1' : '0');
+		mask = mask>>1;
+	}
+	cout<<"\n";
+	cout<<"Задание 4\n";
+		union 
+		{
+			int arr[2];
+			double numb;
+		};
+		int m = sizeof(double)*8;
+		unsigned maska = 1<<(m-1);
+		m = (sizeof(double)*8)/2;
+		cout<<"Enter a float number: ";
+		cin>>numb;
+		int j = 1;
+		for (int i = 1; i <= m;++i)
+		{
+			putchar(arr[j]&maska ? '1':'0');
+			maska>>=1;
+			if (i==1||i==12)
+			{
+				putchar(' ');
+			}
+		}
+		j=0;
+		maska = 1<<(m-1);
+		for (int i = 1; i <= m;++i)
+		{
+			putchar(arr[j]&maska ? '1':'0');
+			maska>>=1;
+		}
+
+		cout<<endl;	
+	cout<<"\n";
+	system("pause");
+}
+
